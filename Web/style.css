@@ -1,0 +1,63 @@
+body {
+    font-family: arial, helvetica, sans-serif;
+    font-size: 14px;
+    #background-image: url(bg.gif);
+    margin: 20px;
+    padding: 0;
+}
+
+p {
+    line-height: 21px;
+}
+
+h1 {
+    #background-image: linear-gradient(rgb(68, 68, 68), rgb(34, 34, 34));
+    color: #34495e;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 900;
+    line-height: 40px;
+    margin: 10px 0;
+    margin-bottom: 7px;
+    padding: 4px;
+}
+
+#container {
+    width: 1000px !important;
+    background-color: #fff;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+
+}
+
+.file_grid {
+    padding-top: 20px;
+    display: block;
+}
+
+.file_block {
+    float: left;
+    width: 100px;
+    height: 100px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 50px;
+    margin-left: 40px;
+    text-align: center;
+}
+
+.file_block a {
+    text-decoration: none;
+}
+
+.file_name {
+    margin-top: 10px;
+    margin-left: -20px;
+    width: 140px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
