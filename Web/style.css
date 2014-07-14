@@ -24,6 +24,27 @@ h1 {
     padding: 4px;
 }
 
+.btn {
+    float: left;
+    margin-right: 10px;
+    width: 100px;
+    height: 30px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2ecc71;
+    color: #ffffff;
+    font-size: 17px;
+    line-height: 1.471;
+    text-align: center;
+    cursor: pointer;
+}
+
+.btn:hover {
+    color: #ffffff;
+    background-color: #58d68d;
+    border-color: #58d68d;
+}
+
 #container {
     width: 1000px !important;
     background-color: #fff;
@@ -34,7 +55,11 @@ h1 {
 
 }
 
-.file_grid {
+#file_upload {
+    margin-left: 20px;
+}
+
+#file_grid {
     padding-top: 20px;
     display: block;
 }
@@ -43,21 +68,20 @@ h1 {
     float: left;
     width: 100px;
     height: 100px;
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 50px;
-    margin-left: 40px;
+    margin-top: 10px;
+    margin-right: 20px;
+    margin-bottom: 30px;
+    margin-left: 20px;
     text-align: center;
 }
 
 .file_block a {
     text-decoration: none;
+    color:#333;
 }
 
 .file_name {
-    margin-top: 10px;
-    margin-left: -20px;
-    width: 140px;
+    margin-top: 8px;
     text-overflow: ellipsis;
     overflow: hidden;
 }

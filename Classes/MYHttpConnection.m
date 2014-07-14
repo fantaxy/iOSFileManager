@@ -82,12 +82,9 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 	BOOL isDir = NO;
 	
 	if (filePath && [[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDir] && !isDir)
-	{
-        NSString *host = [NSString stringWithFormat:@"http://%@:%d", config.server.hostName, config.server.port];
-        
+	{        
         NSMutableDictionary *replacementDict = [NSMutableDictionary dictionaryWithCapacity:3];
         
-        [replacementDict setObject:host forKey:@"HOST"];
         [replacementDict setObject:@"" forKey:@"FILE_PATH"];
         
         HTTPLogVerbose(@"%@[%p]: replacementDict = \n%@", THIS_FILE, self, replacementDict);

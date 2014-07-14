@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>4AEE4350-73B7-4066-9725-66AD9A7A0415</string>
+	<string>515FF992-D092-4339-944E-966D9F0E6395</string>
 	<key>IDESourceControlProjectName</key>
 	<string>iPhoneHTTPServer</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>95FCF0C6-190B-47F4-A148-AE95BC628E9D</key>
-		<string>https://github.com/robbiehanson/CocoaHTTPServer</string>
+		<key>D2125517-B4B4-4759-ACC1-3A2BBEFBF48D</key>
+		<string>https://github.com/fantaxy/iOSFileManager.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Samples/iPhoneHTTPServer/iPhoneHTTPServer.xcodeproj/project.xcworkspace</string>
+	<string>iPhoneHTTPServer.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>95FCF0C6-190B-47F4-A148-AE95BC628E9D</key>
-		<string>../../../..</string>
+		<key>D2125517-B4B4-4759-ACC1-3A2BBEFBF48D</key>
+		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/robbiehanson/CocoaHTTPServer</string>
+	<string>https://github.com/fantaxy/iOSFileManager.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>95FCF0C6-190B-47F4-A148-AE95BC628E9D</string>
+	<string>D2125517-B4B4-4759-ACC1-3A2BBEFBF48D</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>95FCF0C6-190B-47F4-A148-AE95BC628E9D</string>
+			<string>D2125517-B4B4-4759-ACC1-3A2BBEFBF48D</string>
 			<key>IDESourceControlWCCName</key>
-			<string>CocoaHTTPServer</string>
+			<string>iPhoneHTTPServer</string>
 		</dict>
 	</array>
 </dict>

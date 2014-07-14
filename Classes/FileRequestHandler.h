@@ -14,9 +14,5 @@
 + (BOOL)canHandle:(HTTPMessage *)request;
 - (id)initWithConnection:(HTTPConnection *)conn request:(HTTPMessage *)request;
 - (NSObject<HTTPResponse> *)handleRequest;
-- (NSObject<HTTPResponse> *)handleListFile;
-- (void)handleDelete:(NSString*)fileName;
-- (void)handleShow:(NSString*)fileName;
-- (void)handleNew;
 
 @end

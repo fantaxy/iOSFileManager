@@ -31,6 +31,10 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 {
 	NSURL *url = request.url;
 	NSString* fullpath = [url path];
+    if (!fullpath || fullpath.length == 0)
+    {
+        return NO;
+    }
 	NSString* path = [[fullpath componentsSeparatedByString:@"/"] objectAtIndex:1];
 	NSComparisonResult listFiles = [path caseInsensitiveCompare:@"listfile"];
 	NSComparisonResult files = [path caseInsensitiveCompare:@"files"];
@@ -53,6 +57,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 	NSString* path = self.request.url.path;
 	NSString* relativePath = [[path componentsSeparatedByString:@"/"] objectAtIndex:1];
     
+    NSString *method = self.request.method;
 	NSString *_method = [self.parameters objectForKey:@"_method"];
 	
 	if ([self.request.method isEqualToString:@"GET"])
@@ -76,10 +81,10 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 //			[self actionDelete:fileName];
 //		}
 //	}
-//	else if (([method isEqualToString:@"POST"]))
-//	{
-//		[self actionNew];
-//	}
+	else if (([method isEqualToString:@"POST"]))
+	{
+		[self actionNew];
+	}
     return nil;
 }
 
@@ -120,11 +125,8 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
     {
         NSString *indexPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Web/index.html"];
         
-        NSString *host = [NSString stringWithFormat:@"http://%@:%d", self.connection.config.server.hostName, self.connection.config.server.port];
-        
         NSMutableDictionary *replacementDict = [NSMutableDictionary dictionaryWithCapacity:3];
         
-        [replacementDict setObject:host forKey:@"HOST"];
         [replacementDict setObject:targetPath forKey:@"FILE_PATH"];
         
         HTTPLogVerbose(@"%@[%p]: replacementDict = \n%@", THIS_FILE, self, replacementDict);
@@ -135,6 +137,13 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
                                            replacementDictionary:replacementDict];
     }
     return nil;
+}
+
+
+- (void)actionNew
+{
+	NSString *tmpfile = [self.parameters objectForKey:@"tmpfilename"];
+	NSString *filename = [self.parameters objectForKey:@"newfile"];
 }
 
 @end
