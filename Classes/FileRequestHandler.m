@@ -140,6 +140,20 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
         
         NSMutableDictionary *replacementDict = [NSMutableDictionary dictionaryWithCapacity:3];
         
+        NSMutableString *navigation = [NSMutableString new];
+        NSString *iconString = @"<img class='navigate-icon' src='/images/icon_navigate.png'>";
+        Entity *parentDir = targetEntity.parentDir;
+        NSMutableString *parentURL = [[NSMutableString alloc] initWithString:self.request.url.path];
+        while (parentDir.parentDir) {
+            [parentURL appendFormat:@"/.."];
+            NSString *parentString = [NSString stringWithFormat:@"%@<a href='%@'>%@</a>", iconString, parentURL, parentDir.name];
+            [navigation insertString:parentString atIndex:0];
+            parentDir = parentDir.parentDir;
+        }
+        [navigation appendString:iconString];
+        [navigation appendString:targetEntity.name];
+        
+        [replacementDict setObject:navigation forKey:@"NAVIGATION"];
         [replacementDict setObject:[targetPath isEqualToString:@"/"]?@"":targetPath forKey:@"FILE_PATH"];
         
         HTTPLogVerbose(@"%@[%p]: replacementDict = \n%@", THIS_FILE, self, replacementDict);

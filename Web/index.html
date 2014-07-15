@@ -13,7 +13,12 @@
                 Your Files:
             </h1>
             
-            <section id='file_upload'>
+            <section id="path-navigation" class="page-header-text">
+                <a href="/" data-fq_path="" dropzone="copy move" class="crumb">Home</a>
+                %%NAVIGATION%%
+            </section>
+            
+            <section id="global-actions-bar">
                 <form action="" enctype="multipart/form-data" method="post" class='upload'>
                     <div style="height:0px;overflow:hidden">
                     <input type="file" id="fileInput" name="fileInput" />
@@ -21,8 +26,8 @@
                     <button type="button" class='btn' onclick="chooseFile();">choose file</button>
                     <input id="upload_file" class='btn' type="submit" value="Upload" />
                 </form>
-            </section>
-            <br>
+            </section>            
+            
             <section id="file_grid">
             </section>
 

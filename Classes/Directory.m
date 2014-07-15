@@ -59,12 +59,14 @@
             if ([isDirectory boolValue])
             {
                 Directory *dir = [[Directory alloc] initWithURL:theURL name:fileName creationDate:creationDate type:typeDescription];
+                dir.parentDir = self;
                 [dir buildHierachy];
                 [self.fileDict setObject:dir forKey:fileName];
             }
             else
             {
                 File *file = [[File alloc] initWithURL:theURL name:fileName creationDate:creationDate type:typeDescription];
+                file.parentDir = self;
                 [self.fileDict setObject:file forKey:fileName];
             }
         }

@@ -85,6 +85,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
         NSMutableDictionary *replacementDict = [NSMutableDictionary dictionaryWithCapacity:3];
         
         [replacementDict setObject:@"" forKey:@"FILE_PATH"];
+        [replacementDict setObject:@"" forKey:@"NAVIGATION"];
         
         HTTPLogVerbose(@"%@[%p]: replacementDict = \n%@", THIS_FILE, self, replacementDict);
         
@@ -133,20 +134,6 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
     }
 }
 
-- (void)parsePostData:(NSString *)body
-{
-    NSArray* paramstr = [body componentsSeparatedByString:@"&"];
-    
-    for (NSString* pair in paramstr)
-    {
-        NSArray* keyvalue = [pair componentsSeparatedByString:@"="];
-        if ([keyvalue count] == 2)
-            [request.params setObject:[keyvalue objectAtIndex:1] forKey:[[keyvalue objectAtIndex:0] lowercaseString]];
-        else
-            HTTPLogError(@"%@[%p]: %@ - misformat parameters in POST:%@", THIS_FILE, self, THIS_METHOD, pair);
-    }
-}
-
 - (void)processBodyData:(NSData *)postDataChunk
 {
 	HTTPLogTrace();
@@ -173,6 +160,20 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
     else
     {
         [self parsePostData:body];
+    }
+}
+
+- (void)parsePostData:(NSString *)body
+{
+    NSArray* paramstr = [body componentsSeparatedByString:@"&"];
+    
+    for (NSString* pair in paramstr)
+    {
+        NSArray* keyvalue = [pair componentsSeparatedByString:@"="];
+        if ([keyvalue count] == 2)
+            [request.params setObject:[keyvalue objectAtIndex:1] forKey:[[keyvalue objectAtIndex:0] lowercaseString]];
+        else
+            HTTPLogError(@"%@[%p]: %@ - misformat parameters in POST:%@", THIS_FILE, self, THIS_METHOD, pair);
     }
 }
 

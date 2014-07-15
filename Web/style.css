@@ -13,7 +13,7 @@ p {
 h1 {
     #background-image: linear-gradient(rgb(68, 68, 68), rgb(34, 34, 34));
     color: #34495e;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: "Open Sans","lucida grande","Segoe UI",arial,verdana,"lucida sans unicode",tahoma,sans-serif;
     font-size: 32px;
     font-style: normal;
     font-variant: normal;
@@ -22,6 +22,47 @@ h1 {
     margin: 10px 0;
     margin-bottom: 7px;
     padding: 4px;
+}
+
+#container {
+    width: 1000px !important;
+    background-color: #fff;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+
+}
+
+#container a {
+    text-decoration: none;
+}
+
+.navigate-icon {
+    margin-right: 6px;
+    width: 12px;
+    height: 12px;
+}
+
+#path-navigation {
+    float: left;
+    width: 100%;
+    line-height: 32px;
+    font-size: 18px;
+    margin-left: 20px;
+    margin-bottom: 26px;
+    font-family: "Open Sans","lucida grande","Segoe UI",arial,verdana,"lucida sans unicode",tahoma,sans-serif;
+}
+
+#path-navigation a {
+    color: #2895f1;
+}
+
+#global-actions-bar {
+    float: left;
+    width: 100%;
+    margin-left: 20px;
+    margin-bottom: 20px;
 }
 
 .btn {
@@ -45,20 +86,6 @@ h1 {
     border-color: #58d68d;
 }
 
-#container {
-    width: 1000px !important;
-    background-color: #fff;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-
-}
-
-#file_upload {
-    margin-left: 20px;
-}
-
 #file_grid {
     padding-top: 20px;
     display: block;
@@ -76,8 +103,7 @@ h1 {
 }
 
 .file_block a {
-    text-decoration: none;
-    color:#333;
+    color: #333;
 }
 
 .file_name {

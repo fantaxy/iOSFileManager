@@ -39,6 +39,7 @@ static FileManager *sharedInstance;
         _fileManager = [[NSFileManager alloc] init];
         NSURL *rootURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
         _rootDir = [[Directory alloc] initWithURL:rootURL name:@"root" creationDate:[NSDate date] type:@"root"];
+        _rootDir.parentDir = nil;
         [_rootDir buildHierachy];
     }
     return self;
