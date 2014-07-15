@@ -44,7 +44,7 @@ static FileManager *sharedInstance;
     return self;
 }
 
--(Directory *)getDirectoryFromPath:(NSString *)path
+- (Entity *)getEntityFromPath:(NSString *)path
 {
     if (!path)
     {
@@ -69,24 +69,49 @@ static FileManager *sharedInstance;
         {
             return nil;
         }
+        Entity *entity = nil;
         Directory *dir = self.rootDir;
         for (int i = 0; i < array.count; i++)
         {
-            Entity *entity = [dir getEntityFromPath:array[i]];
-            if (entity && [entity isKindOfClass:[Directory class]])
+            entity = [dir getEntityFromPath:array[i]];
+            if (i == array.count-1)
             {
-                dir = (Directory *)entity;
+                return entity;
             }
             else
             {
-                return nil;
+                if (entity && [entity isKindOfClass:[Directory class]])
+                {
+                    // Keep on diving.
+                    dir = (Directory *)entity;
+                }
+                else
+                {
+                    NSLog(@"ERROR: The path %@ is illegal. %@ is a file, not a directory.", path, entity.name);
+                    return nil;
+                }
             }
         }
-        return dir;
+        return entity;
     }
 }
 
+- (Directory *)getDirectoryFromPath:(NSString *)path
+{
+    Entity *entity = [self getEntityFromPath:path];
+    if (entity && [entity isKindOfClass:[Directory class]])
+    {
+        return (Directory *)entity;
+    }
+    NSLog(@"ERROR: The path %@ is not a directory.", path);
+    return nil;
+}
 
+- (void)newFileWithName:(NSString *)fileName path:(NSString *)path tmpPath:(NSString *)tmpPath
+{
+    Directory *dir = [self getDirectoryFromPath:path];
+    [dir addFileWithName:fileName inTempPath:tmpPath];
+}
 
 
 

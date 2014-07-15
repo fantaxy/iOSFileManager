@@ -9,6 +9,7 @@
 #import "FileRequestHandler.h"
 #import "HTTPServer.h"
 #import "HTTPMessage.h"
+#import "File.h"
 #import "FileManager.h"
 #import "HTTPDataResponse.h"
 #import "HTTPFileResponse.h"
@@ -29,6 +30,10 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 
 + (BOOL)canHandle:(HTTPMessage *)request
 {
+    if ([request.method isEqualToString:@"POST"])
+    {
+        return YES;
+    }
 	NSURL *url = request.url;
 	NSString* fullpath = [url path];
     if (!fullpath || fullpath.length == 0)
@@ -64,11 +69,11 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 	{
         if (NSOrderedSame == [relativePath caseInsensitiveCompare:@"listfile"])
         {
-			return [self actionList];
+			return [self handleListFile];
         }
 		else if (NSOrderedSame == [relativePath caseInsensitiveCompare:@"files"])
         {
-			return [self actionShow];
+			return [self handleShowFile];
         }
         return nil;
 	}
@@ -83,15 +88,19 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 //	}
 	else if (([method isEqualToString:@"POST"]))
 	{
-		[self actionNew];
+		return [self handleUploadFile];
 	}
     return nil;
 }
 
-- (NSObject<HTTPResponse> *)actionList
+- (NSObject<HTTPResponse> *)handleListFile
 {
-    NSRange removeRange = [self.request.url.path rangeOfString:@"listfile"];
-    NSString *targetPath = [self.request.url.path substringFromIndex:removeRange.location+removeRange.length];
+    NSString *targetPath = self.request.url.path;
+    NSRange removeRange = [targetPath rangeOfString:@"listfile"];
+    if (removeRange.location != NSNotFound)
+    {
+        targetPath = [targetPath substringFromIndex:removeRange.location+removeRange.length];
+    }
     Directory *targetDir = [[FileManager sharedInstance] getDirectoryFromPath:targetPath];
     
 	NSMutableString *output = [[NSMutableString alloc] init];
@@ -115,19 +124,23 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
     return [[HTTPDataResponse alloc] initWithData:[output dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
-- (NSObject<HTTPResponse> *)actionShow
+- (NSObject<HTTPResponse> *)handleShowFile
 {
-    NSRange removeRange = [self.request.url.path rangeOfString:@"files"];
-    NSString *targetPath = [self.request.url.path substringFromIndex:removeRange.location+removeRange.length];
-    Directory *targetDir = [[FileManager sharedInstance] getDirectoryFromPath:targetPath];
+    NSString *targetPath = self.request.url.path;
+    NSRange removeRange = [targetPath rangeOfString:@"files"];
+    if (removeRange.location != NSNotFound)
+    {
+        targetPath = [targetPath substringFromIndex:removeRange.location+removeRange.length];
+    }
+    Entity *targetEntity = [[FileManager sharedInstance] getEntityFromPath:targetPath];
     
-    if (targetDir)
+    if (targetEntity && [targetEntity isKindOfClass:[Directory class]])
     {
         NSString *indexPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Web/index.html"];
         
         NSMutableDictionary *replacementDict = [NSMutableDictionary dictionaryWithCapacity:3];
         
-        [replacementDict setObject:targetPath forKey:@"FILE_PATH"];
+        [replacementDict setObject:[targetPath isEqualToString:@"/"]?@"":targetPath forKey:@"FILE_PATH"];
         
         HTTPLogVerbose(@"%@[%p]: replacementDict = \n%@", THIS_FILE, self, replacementDict);
         
@@ -136,14 +149,27 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
                                                        separator:@"%%"
                                            replacementDictionary:replacementDict];
     }
+    else if (targetEntity && [targetEntity isKindOfClass:[File class]])
+    {
+        return [[HTTPFileResponse alloc] initWithFilePath:targetEntity.url.path forConnection:self.connection];
+    }
     return nil;
 }
 
 
-- (void)actionNew
+- (NSObject<HTTPResponse> *)handleUploadFile
 {
+    NSString *targetPath = self.request.url.path;
+    NSRange removeRange = [targetPath rangeOfString:@"files"];
+    if (removeRange.location != NSNotFound)
+    {
+        targetPath = [targetPath substringFromIndex:removeRange.location+removeRange.length];
+    }
+    
+	NSString *filename = [self.parameters objectForKey:@"fileInput"];
 	NSString *tmpfile = [self.parameters objectForKey:@"tmpfilename"];
-	NSString *filename = [self.parameters objectForKey:@"newfile"];
+    [[FileManager sharedInstance] newFileWithName:filename path:targetPath tmpPath:tmpfile];
+    return [self handleShowFile];
 }
 
 @end

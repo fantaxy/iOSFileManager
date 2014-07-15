@@ -24,9 +24,8 @@
 - (NSString*)filePathForFileName:(NSString*)filename;
 
 // handle newly uploaded file. After uploading, the file is stored in
-// the temparory directory, you need to implement this method to move
-// it to proper location and update the file list.
-- (void)newFileDidUpload:(NSString*)name inTempPath:(NSString*)tmpPath;
+// the temparory directory
+- (void)addFileWithName:(NSString*)name inTempPath:(NSString*)tmpPath;
 
 // implement this method to delete requested file and update the file list
 - (void)fileShouldDelete:(NSString*)fileName;

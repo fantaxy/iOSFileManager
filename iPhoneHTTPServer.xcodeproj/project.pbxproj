@@ -121,9 +121,9 @@
 		76E715E919693D3100A1B53E /* MYHttpConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYHttpConnection.h; sourceTree = "<group>"; };
 		76E715EA19693D3100A1B53E /* MYHttpConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYHttpConnection.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* iPhoneHTTPServer-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iPhoneHTTPServer-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		DC372E48139D398400A8407D /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
-		DC372E49139D398400A8407D /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
-		DC372E4B139D398400A8407D /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		DC372E48139D398400A8407D /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = "Xcode-Configurations/Base.xcconfig"; sourceTree = "<group>"; };
+		DC372E49139D398400A8407D /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = "Xcode-Configurations/Debug.xcconfig"; sourceTree = "<group>"; };
+		DC372E4B139D398400A8407D /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = "Xcode-Configurations/Release.xcconfig"; sourceTree = "<group>"; };
 		DC5406E1129F5CC800195140 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		DC54077E129F638200195140 /* Web */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Web; sourceTree = "<group>"; };
 		DCC3699D1538F08B004C5FA7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -171,6 +171,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				76D7D4741974E93600A8136B /* XCConfig */,
 				DCD6EAC516FFB10900710668 /* Default-568h@2x.png */,
 				7630E7EE1973896300FE9445 /* Logging */,
 				7630E8001973899300FE9445 /* TCP */,
@@ -187,7 +188,6 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				DC372E47139D398400A8407D /* Xcode-Configurations */,
 				32CA4F630368D1EE00C91783 /* iPhoneHTTPServer_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
@@ -326,15 +326,14 @@
 			name = FileManager;
 			sourceTree = "<group>";
 		};
-		DC372E47139D398400A8407D /* Xcode-Configurations */ = {
+		76D7D4741974E93600A8136B /* XCConfig */ = {
 			isa = PBXGroup;
 			children = (
 				DC372E48139D398400A8407D /* Base.xcconfig */,
 				DC372E49139D398400A8407D /* Debug.xcconfig */,
 				DC372E4B139D398400A8407D /* Release.xcconfig */,
 			);
-			name = "Xcode-Configurations";
-			path = "../Xcode-Configurations";
+			name = XCConfig;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -445,17 +444,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1D6058940D05DD3E006BFB54 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				GCC_PREFIX_HEADER = iPhoneHTTPServer_Prefix.pch;
-				INFOPLIST_FILE = "iPhoneHTTPServer-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				PRODUCT_NAME = iPhoneHTTPServer;
-			};
-			name = Debug;
-		};
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -467,7 +455,7 @@
 			};
 			name = Release;
 		};
-		C01FCF4F08A954540054247B /* Debug */ = {
+		7621EE7D1974EAB7009B09D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DC372E49139D398400A8407D /* Debug.xcconfig */;
 			buildSettings = {
@@ -480,6 +468,17 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		7621EE7E1974EAB7009B09D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PREFIX_HEADER = iPhoneHTTPServer_Prefix.pch;
+				INFOPLIST_FILE = "iPhoneHTTPServer-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = iPhoneHTTPServer;
 			};
 			name = Debug;
 		};
@@ -505,8 +504,8 @@
 		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iPhoneHTTPServer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
+				7621EE7E1974EAB7009B09D6 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -514,8 +513,8 @@
 		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "iPhoneHTTPServer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+				7621EE7D1974EAB7009B09D6 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

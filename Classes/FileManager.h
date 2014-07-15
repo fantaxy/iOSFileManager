@@ -13,6 +13,8 @@
 
 + (FileManager *)sharedInstance;
 
+- (Entity *)getEntityFromPath:(NSString *)path;
 - (Directory *)getDirectoryFromPath:(NSString *)path;
+- (void)newFileWithName:(NSString *)fileName path:(NSString *)path tmpPath:(NSString *)tmpPath;
 
 @end

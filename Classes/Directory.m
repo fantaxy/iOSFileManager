@@ -21,11 +21,12 @@
 
 - (void)initialize
 {
-    _fileDict = [[NSMutableDictionary alloc] init];
 }
 
 - (void)buildHierachy
 {
+    _fileDict = [[NSMutableDictionary alloc] init];
+    
     NSError *error = nil;
     NSArray *properties = [NSArray arrayWithObjects:
                            NSURLNameKey,
@@ -83,8 +84,21 @@
 
 - (NSString *)fileNameAtIndex:(NSInteger)index
 {
-    Entity *entity = (Entity *)self.fileDict.allValues[index];
-    return entity.name;
+    return self.fileDict.allKeys[index];
+}
+
+- (void)addFileWithName:(NSString *)name inTempPath:(NSString *)tmpPath
+{
+    if (name == nil || tmpPath == nil)
+		return;
+	NSString *path = [NSString stringWithFormat:@"%@/%@", self.url.path, name];
+	NSFileManager *fm = [NSFileManager defaultManager];
+	NSError *error;
+	if (![fm moveItemAtPath:tmpPath toPath:path error:&error])
+	{
+		NSLog(@"Can not move %@ to %@ because: %@", tmpPath, path, error );
+	}
+    [self buildHierachy];
 }
 
 @end
