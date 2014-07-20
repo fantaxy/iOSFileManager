@@ -43,11 +43,11 @@
                       function(data){
                       $.each(data, function(i,item){
                              encodeName = encodeURI(item.name).replace("'", "&apos;");
-                             $("<div class='file_block'>" +
-                               "<img src='/images/fileicon.png'>" +
-                               "<div class='file_name'>" +
+                             var div = $('<div/>').attr("class","file_block").appendTo("#file_grid");
+                             $('<img/>').attr("src","/images/fileicon.png").appendTo(div);
+                             $("<div class='file_name'>" +
                                "<a href='/files%%FILE_PATH%%/" + item.name + "'>" + item.name + "</a>" +
-                               "</div> </div>").appendTo("#file_grid");
+                               "</div>").appendTo(div);
                              });
                       });
         </script>

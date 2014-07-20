@@ -95,11 +95,12 @@ h1 {
     float: left;
     width: 100px;
     height: 100px;
-    margin-top: 10px;
-    margin-right: 20px;
-    margin-bottom: 30px;
-    margin-left: 20px;
+    padding: 30px 40px 50px 40px;
     text-align: center;
+}
+
+.file_block:hover {
+    background: rgba(0,102,204,0.3);
 }
 
 .file_block a {
