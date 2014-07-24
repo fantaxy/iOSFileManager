@@ -109,7 +109,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 	{
 		NSString* filename = [targetDir fileNameAtIndex:i];
 		NSString* file = [filename stringByReplacingOccurrencesOfString:@"'" withString:@"\\'"] ;
-		[output appendFormat:@"{'name':'%@', 'id':%d},", file, i];
+		[output appendFormat:@"{\"name\":\"%@\", \"id\":%d},", file, i];
 	}
 	if ([output length] > 1)
 	{
