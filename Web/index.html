@@ -35,9 +35,15 @@
         
 		<script type="text/javascript" charset="utf-8">
             var path = '%%FILE_PATH%%';
-            var selectedFiles = [];
             function chooseFile() {
                 $("#fileInput").click();
+            }
+
+            function deselectAll() {
+                $( "input:checked" ).each(function() {
+                    $(this).prop("checked",false);
+                    $(this).parent().attr("class","file_block");
+                });
             }
         
             var now = new Date();
@@ -51,13 +57,20 @@
                              $("<div class='file_name'>" +
                                "<a href='/files%%FILE_PATH%%/" + item.name + "'>" + item.name + "</a>" +
                                "</div>").appendTo(div);
-                             div.click(function(event) {
+                             div.click(function(e) {
                                 var checkbox = $(this).find(":checkbox");
-                                if (checkbox.prop("checked")) {
-                                    checkbox.prop("checked",false);
-                                    $(this).attr("class","file_block");
-                                }
+                                if (e.ctrlKey || e.metaKey) {
+                                    if (!checkbox.prop("checked")) {
+                                        checkbox.prop("checked",true);
+                                        $(this).attr("class","file_block_selected");
+                                    }
+                                    else {
+                                        checkbox.prop("checked",false);
+                                        $(this).attr("class","file_block");
+                                    }
+                                }                                
                                 else {
+                                    deselectAll();
                                     checkbox.prop("checked",true);
                                     $(this).attr("class","file_block_selected");
                                 }

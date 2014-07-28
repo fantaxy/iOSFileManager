@@ -99,10 +99,6 @@ h1 {
     text-align: center;
 }
 
-.file_block:hover {
-    background: rgba(0,102,204,0.3);
-}
-
 .file_block_selected {
     float: left;
     width: 100px;
