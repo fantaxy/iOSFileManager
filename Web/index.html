@@ -25,6 +25,7 @@
                     </div>
                     <button type="button" class='btn' onclick="chooseFile();">choose file</button>
                     <input id="upload_file" class='btn' type="submit" value="Upload" />
+                    <button type="button" class='btn' onclick="onClickDelete();">delete</button>
                 </form>
             </section>            
             
@@ -46,9 +47,10 @@
                 });
             }
         
-            var now = new Date();
-            $.getJSON("/listfile%%FILE_PATH%%?" + now.toString(),
-                      function(data){
+            function loadFiles() {
+                var now = new Date();
+                $.getJSON("/listfile" + path + "?" + now.toString(),
+                    function(data){
                       $.each(data, function(i,item){
                              encodeName = encodeURI(item.name).replace("'", "&apos;");
                              var div = $('<div/>').attr("class","file_block").appendTo("#file_grid");
@@ -76,10 +78,29 @@
                                 }
                              });
                       });
-                      }).fail(function( jqxhr, textStatus, error ) {
-                              var err = textStatus + ", " + error;
-                              console.log( "Request Failed: " + err );
-                              });
+                    }).fail(function( jqxhr, textStatus, error ) {
+                        var err = textStatus + ", " + error;
+                        console.log( "Request Failed: " + err );
+                    });
+            }
+            loadFiles();
+            
+            function deleteSelected(selected) {
+                $.post("/deletefile" + path, "path="+path+"&delete="+selected)
+                    .done(function (){
+                        
+                    });
+            }
+
+            function onClickDelete() {
+                var fileToDelete = "";
+                $("input:checked").each(function() {
+                    fileToDelete += $(this).val() + ",";
+                });
+                if (fileToDelete != "") {
+                    deleteSelected(fileToDelete);
+                }
+            }
         </script>
         
     </body>
