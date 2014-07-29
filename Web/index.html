@@ -48,6 +48,7 @@
             }
         
             function loadFiles() {
+                $("#file_grid").empty();
                 var now = new Date();
                 $.getJSON("/listfile" + path + "?" + now.toString(),
                     function(data){
@@ -88,7 +89,7 @@
             function deleteSelected(selected) {
                 $.post("/deletefile" + path, "path="+path+"&delete="+selected)
                     .done(function (){
-                        
+                        loadFiles();
                     });
             }
 

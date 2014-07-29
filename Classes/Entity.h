@@ -19,5 +19,6 @@
 
 - (instancetype)initWithURL:(NSURL *)url name:(NSString *)name creationDate:(NSDate *)date type:(NSString *)type;
 - (void)initialize;
+- (BOOL)delete;
 
 @end

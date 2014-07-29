@@ -13,6 +13,7 @@
 #import "FileManager.h"
 #import "HTTPDataResponse.h"
 #import "HTTPFileResponse.h"
+#import "HTTPErrorResponse.h"
 #import "HTTPDynamicFileResponse.h"
 #import "HTTPLogging.h"
 
@@ -63,7 +64,6 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 	NSString* relativePath = [[path componentsSeparatedByString:@"/"] objectAtIndex:1];
     
     NSString *method = self.request.method;
-	NSString *_method = [self.parameters objectForKey:@"_method"];
 	
 	if ([self.request.method isEqualToString:@"GET"])
 	{
@@ -77,18 +77,13 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
         }
         return nil;
 	}
-//	else if (([method isEqualToString:@"POST"]) && _method && [[_method lowercaseString] isEqualToString:@"delete"])
-//	{
-//		NSArray *segs = [path componentsSeparatedByString:@"/"];
-//		if ([segs count] >= 2)
-//		{
-//			NSString* fileName = [segs objectAtIndex:2];
-//			[self actionDelete:fileName];
-//		}
-//	}
 	else if (([method isEqualToString:@"POST"]))
 	{
-		return [self handleUploadFile];
+        if (NSOrderedSame == [relativePath caseInsensitiveCompare:@"deletefile"])
+        {
+			return [self handleDeleteFile];
+        }
+        return [self handleUploadFile];
 	}
     return nil;
 }
@@ -184,6 +179,25 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 	NSString *tmpfile = [self.parameters objectForKey:@"tmpfilename"];
     [[FileManager sharedInstance] newFileWithName:filename path:targetPath tmpPath:tmpfile];
     return [self handleShowFile];
+}
+
+- (NSObject<HTTPResponse> *)handleDeleteFile
+{
+	NSString *path = [self.parameters objectForKey:@"path"];
+	NSString *files = [self.parameters objectForKey:@"delete"];
+    //Note: files should be @"file1,file2,file3,"
+    if (files && files.length)
+    {
+        if ([files hasSuffix:@","])
+        {
+            files = [files substringToIndex:files.length-1];
+        }
+        NSArray *fileArray = [files componentsSeparatedByString:@","];
+        Directory *dir = [[FileManager sharedInstance] getDirectoryFromPath:path];
+        NSParameterAssert(dir);
+        [dir deleteFilesWithArray:fileArray];
+    }
+    return [[HTTPErrorResponse alloc] initWithErrorCode:200];
 }
 
 @end

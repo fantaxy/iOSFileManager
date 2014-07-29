@@ -27,7 +27,7 @@
 // the temparory directory
 - (void)addFileWithName:(NSString*)name inTempPath:(NSString*)tmpPath;
 
-// implement this method to delete requested file and update the file list
-- (void)fileShouldDelete:(NSString*)fileName;
+// implement this method to delete requested file
+- (void)deleteFilesWithArray:(NSArray *)files;
 
 @end

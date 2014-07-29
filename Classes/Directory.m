@@ -103,4 +103,14 @@
     [self buildHierachy];
 }
 
+- (void)deleteFilesWithArray:(NSArray *)files
+{
+    for (NSString *path in files)
+    {
+        Entity *entity = [self getEntityFromPath:path];
+        [entity delete];
+    }
+    [self buildHierachy];
+}
+
 @end

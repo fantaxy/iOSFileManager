@@ -39,4 +39,15 @@
     return [NSString stringWithFormat:@"%@ File name: %@ URL: %@ Create at: %@ Type: %@", self.class, self.name, self.url, self.creationDate, self.type];
 }
 
+- (BOOL)delete
+{
+    NSError *error;
+	if(![[NSFileManager defaultManager] removeItemAtURL:self.url error:&error])
+    {
+        NSLog(@"Fail to remove %@ because:%@", self.url, error);
+        return NO;
+    }
+    return YES;
+}
+
 @end
