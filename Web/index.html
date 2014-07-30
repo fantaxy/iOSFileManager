@@ -6,19 +6,19 @@
         <link rel="stylesheet" href="/style.css">
         <title>iOS File Manager</title>
     </head>
-    <body bgcolor="#FFFFFF">
+    <body>
         
         <div id="container">
             <h1>
                 Your Files:
             </h1>
             
-            <section id="path-navigation" class="page-header-text">
+            <div id="path-navigation" class="page-header-text">
                 <a href="/" data-fq_path="" dropzone="copy move" class="crumb">Home</a>
                 %%NAVIGATION%%
-            </section>
+            </div>
             
-            <section id="global-actions-bar">
+            <div id="global-actions-bar">
                 <form action="" enctype="multipart/form-data" method="post" class='upload'>
                     <div style="height:0px;overflow:hidden">
                     <input type="file" id="fileInput" name="fileInput" />
@@ -27,10 +27,10 @@
                     <input id="upload_file" class='btn' type="submit" value="Upload" />
                     <button type="button" class='btn' onclick="onClickDelete();">delete</button>
                 </form>
-            </section>            
+            </div>
             
-            <section id="file_grid">
-            </section>
+            <div id="file_grid">
+            </div>
 
         </div>
         
@@ -57,8 +57,7 @@
                              var div = $('<div/>').attr("class","file_block").appendTo("#file_grid");
                              $('<img/>').attr("src","/images/fileicon.png").appendTo(div);
                              $("<input type='checkbox' value='" + item.name + "' style='display:none'>").appendTo(div);
-                             $("<div class='file_name'>" +
-                               "<a href='/files%%FILE_PATH%%/" + item.name + "'>" + item.name + "</a>" +
+                             $("<div class='file_name'>" + item.name +
                                "</div>").appendTo(div);
                              div.click(function(e) {
                                 var checkbox = $(this).find(":checkbox");
@@ -102,6 +101,11 @@
                     deleteSelected(fileToDelete);
                 }
             }
+        
+            $('body').click( function (e) {
+                if ( e.target == this )
+                    deselectAll();
+                });
         </script>
         
     </body>

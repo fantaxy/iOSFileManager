@@ -1,4 +1,9 @@
+html {
+    height: 100%;
+}
+
 body {
+    min-height: 100%;
     font-family: arial, helvetica, sans-serif;
     font-size: 14px;
     #background-image: url(bg.gif);
@@ -93,27 +98,30 @@ h1 {
 
 .file_block {
     float: left;
-    width: 100px;
-    height: 100px;
-    padding: 30px 40px 50px 40px;
-    text-align: center;
+    width: 180px;
+    height: 180px;
 }
 
 .file_block_selected {
     float: left;
-    width: 100px;
-    height: 100px;
-    padding: 30px 40px 50px 40px;
-    text-align: center;
+    width: 180px;
+    height: 180px;
     background: rgba(0,102,204,0.3);
+    border: 1px solid blue;
+    box-sizing: border-box;
 }
 
-.file_block a {
-    color: #333;
+.file_block img, .file_block_selected img {
+    width: 100px;
+    height: 100px;
+    margin: 30px 40px 0px 40px;
 }
 
 .file_name {
-    margin-top: 8px;
+    width: 160px;
+    margin: 8px 10px 0px 10px;
+    text-align: center;
     text-overflow: ellipsis;
     overflow: hidden;
+    white-space: nowrap;
 }
