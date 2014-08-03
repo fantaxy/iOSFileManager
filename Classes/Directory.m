@@ -99,6 +99,7 @@
 	if (![fm moveItemAtPath:tmpPath toPath:path error:&error])
 	{
 		NSLog(@"Can not move %@ to %@ because: %@", tmpPath, path, error );
+        return;
 	}
     [self buildHierachy];
 }

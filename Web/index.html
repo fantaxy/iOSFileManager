@@ -3,6 +3,9 @@
     <head>
         <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 		<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="/js/jquery.ui.widget.js"></script>
+        <script src="/js/jquery.iframe-transport.js"></script>
+        <script src="/js/jquery.fileupload.js"></script>
         <link rel="stylesheet" href="/style.css">
         <title>iOS File Manager</title>
     </head>
@@ -14,19 +17,16 @@
             </h1>
             
             <div id="path-navigation" class="page-header-text">
-                <a href="/" data-fq_path="" dropzone="copy move" class="crumb">Home</a>
+                <a href="/" >Home</a>
                 %%NAVIGATION%%
             </div>
             
             <div id="global-actions-bar">
-                <form action="" enctype="multipart/form-data" method="post" class='upload'>
-                    <div style="height:0px;overflow:hidden">
-                    <input type="file" id="fileInput" name="fileInput" />
-                    </div>
-                    <button type="button" class='btn' onclick="chooseFile();">choose file</button>
-                    <input id="upload_file" class='btn' type="submit" value="Upload" />
-                    <button type="button" class='btn' onclick="onClickDelete();">delete</button>
-                </form>
+                <div style="height:0px;overflow:hidden">
+                    <input id="fileupload" type="file" name="files[]" data-url="" multiple>
+                </div>
+                <button type="button" class='btn' onclick="chooseFile();">upload file</button>
+                <button type="button" class='btn' onclick="onClickDelete();">delete</button>
             </div>
             
             <div id="file_grid">
@@ -37,7 +37,7 @@
 		<script type="text/javascript" charset="utf-8">
             var path = '%%FILE_PATH%%';
             function chooseFile() {
-                $("#fileInput").click();
+                $("#fileupload").click();
             }
 
             function deselectAll() {
@@ -48,13 +48,15 @@
             }
         
             function loadFiles() {
-                $("#file_grid").empty();
+                var target = $("#file_grid");
+                var newfilegrid = $('<div/>').attr("id","file_grid");
+                
                 var now = new Date();
                 $.getJSON("/listfile" + path + "?" + now.toString(),
                     function(data){
                       $.each(data, function(i,item){
                              encodeName = encodeURI(item.name).replace("'", "&apos;");
-                             var div = $('<div/>').attr("class","file_block").appendTo("#file_grid");
+                             var div = $('<div/>').attr("class","file_block").appendTo(newfilegrid);
                              $('<img/>').attr("src","/images/fileicon.png").appendTo(div);
                              $("<input type='checkbox' value='" + item.name + "' style='display:none'>").appendTo(div);
                              $("<div class='file_name'>" + item.name +
@@ -82,6 +84,8 @@
                         var err = textStatus + ", " + error;
                         console.log( "Request Failed: " + err );
                     });
+                newfilegrid.insertBefore(target);
+                target.remove();
             }
             loadFiles();
             
@@ -106,6 +110,15 @@
                 if ( e.target == this )
                     deselectAll();
                 });
+                
+                
+            $(function () {
+                $('#fileupload').fileupload({
+                    done: function (e, data) {
+                        loadFiles();
+                    }
+                });
+            });
         </script>
         
     </body>

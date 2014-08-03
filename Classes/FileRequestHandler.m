@@ -175,10 +175,10 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
         targetPath = [targetPath substringFromIndex:removeRange.location+removeRange.length];
     }
     
-	NSString *filename = [self.parameters objectForKey:@"fileInput"];
+	NSString *filename = [self.parameters objectForKey:@"files[]"];
 	NSString *tmpfile = [self.parameters objectForKey:@"tmpfilename"];
     [[FileManager sharedInstance] newFileWithName:filename path:targetPath tmpPath:tmpfile];
-    return [self handleShowFile];
+    return [[HTTPErrorResponse alloc] initWithErrorCode:200];
 }
 
 - (NSObject<HTTPResponse> *)handleDeleteFile
