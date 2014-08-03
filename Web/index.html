@@ -47,6 +47,29 @@
                 });
             }
         
+            function singleClick(e) {
+                var checkbox = $(this).find(":checkbox");
+                if (e.ctrlKey || e.metaKey) {
+                    if (!checkbox.prop("checked")) {
+                    checkbox.prop("checked",true);
+                    $(this).attr("class","file_block_selected");
+                    }
+                    else {
+                      checkbox.prop("checked",false);
+                      $(this).attr("class","file_block");
+                    }
+                }
+                else {
+                    deselectAll();
+                    checkbox.prop("checked",true);
+                    $(this).attr("class","file_block_selected");
+                }
+            }
+
+            function doubleClick(e) {
+                window.location = "/home"+path+"/"+$(this).text();
+            }
+        
             function loadFiles() {
                 var target = $("#file_grid");
                 var newfilegrid = $('<div/>').attr("id","file_grid");
@@ -54,31 +77,14 @@
                 var now = new Date();
                 $.getJSON("/listfile" + path + "?" + now.toString(),
                     function(data){
-                      $.each(data, function(i,item){
-                             encodeName = encodeURI(item.name).replace("'", "&apos;");
-                             var div = $('<div/>').attr("class","file_block").appendTo(newfilegrid);
-                             $('<img/>').attr("src","/images/fileicon.png").appendTo(div);
-                             $("<input type='checkbox' value='" + item.name + "' style='display:none'>").appendTo(div);
-                             $("<div class='file_name'>" + item.name +
-                               "</div>").appendTo(div);
-                             div.click(function(e) {
-                                var checkbox = $(this).find(":checkbox");
-                                if (e.ctrlKey || e.metaKey) {
-                                    if (!checkbox.prop("checked")) {
-                                        checkbox.prop("checked",true);
-                                        $(this).attr("class","file_block_selected");
-                                    }
-                                    else {
-                                        checkbox.prop("checked",false);
-                                        $(this).attr("class","file_block");
-                                    }
-                                }                                
-                                else {
-                                    deselectAll();
-                                    checkbox.prop("checked",true);
-                                    $(this).attr("class","file_block_selected");
-                                }
-                             });
+                        $.each(data, function(i,item){
+                            encodeName = encodeURI(item.name).replace("'", "&apos;");
+                            var div = $('<div/>').attr("class","file_block").appendTo(newfilegrid);
+                            $('<img/>').attr("src","/images/fileicon.png").appendTo(div);
+                            $("<input type='checkbox' value='" + item.name + "' style='display:none'>").appendTo(div);
+                            $("<div class='file_name'>" + item.name +
+                            "</div>").appendTo(div);
+                            div.single_double_click(singleClick, doubleClick, 300);
                       });
                     }).fail(function( jqxhr, textStatus, error ) {
                         var err = textStatus + ", " + error;
@@ -118,7 +124,26 @@
                         loadFiles();
                     }
                 });
-            });
+            });            
+
+            jQuery.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {
+                return this.each(function(){
+                    var clicks = 0, self = this;
+                    jQuery(this).click(function(event){
+                        clicks++;
+                        if (clicks == 1) {
+                            single_click_callback.call(self, event);
+                            setTimeout(function(){
+                                if(clicks == 1) {
+                                } else {
+                                    double_click_callback.call(self, event);
+                                }
+                                clicks = 0;
+                            }, timeout || 300);
+                        }
+                    });
+                });
+            }
         </script>
         
     </body>

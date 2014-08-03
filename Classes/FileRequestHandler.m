@@ -43,7 +43,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
     }
 	NSString* path = [[fullpath componentsSeparatedByString:@"/"] objectAtIndex:1];
 	NSComparisonResult listFiles = [path caseInsensitiveCompare:@"listfile"];
-	NSComparisonResult files = [path caseInsensitiveCompare:@"files"];
+	NSComparisonResult files = [path caseInsensitiveCompare:@"home"];
 	return listFiles == NSOrderedSame || files == NSOrderedSame;
 }
 
@@ -71,7 +71,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
         {
 			return [self handleListFile];
         }
-		else if (NSOrderedSame == [relativePath caseInsensitiveCompare:@"files"])
+		else if (NSOrderedSame == [relativePath caseInsensitiveCompare:@"home"])
         {
 			return [self handleShowFile];
         }
@@ -122,7 +122,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 - (NSObject<HTTPResponse> *)handleShowFile
 {
     NSString *targetPath = self.request.url.path;
-    NSRange removeRange = [targetPath rangeOfString:@"files"];
+    NSRange removeRange = [targetPath rangeOfString:@"home"];
     if (removeRange.location != NSNotFound)
     {
         targetPath = [targetPath substringFromIndex:removeRange.location+removeRange.length];
@@ -169,7 +169,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 - (NSObject<HTTPResponse> *)handleUploadFile
 {
     NSString *targetPath = self.request.url.path;
-    NSRange removeRange = [targetPath rangeOfString:@"files"];
+    NSRange removeRange = [targetPath rangeOfString:@"home"];
     if (removeRange.location != NSNotFound)
     {
         targetPath = [targetPath substringFromIndex:removeRange.location+removeRange.length];
