@@ -13,13 +13,14 @@
 	UInt64 fileOffset;
 	
 	BOOL aborted;
+    BOOL forDownload;
 	
 	int fileFD;
 	void *buffer;
 	NSUInteger bufferSize;
 }
 
-- (id)initWithFilePath:(NSString *)filePath forConnection:(HTTPConnection *)connection;
+- (id)initWithFilePath:(NSString *)fpath forDownload:(BOOL)download forConnection:(HTTPConnection *)parent;
 - (NSString *)filePath;
 
 @end

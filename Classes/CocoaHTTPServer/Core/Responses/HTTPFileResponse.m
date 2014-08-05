@@ -18,7 +18,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 
 @implementation HTTPFileResponse
 
-- (id)initWithFilePath:(NSString *)fpath forConnection:(HTTPConnection *)parent
+- (id)initWithFilePath:(NSString *)fpath forDownload:(BOOL)download forConnection:(HTTPConnection *)parent
 {
 	if((self = [super init]))
 	{
@@ -28,6 +28,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 		
 		fileFD = NULL_FD;
 		filePath = [[fpath copy] stringByResolvingSymlinksInPath];
+        forDownload = download;
 		if (filePath == nil)
 		{
 			HTTPLogWarn(@"%@: Init failed - Nil filePath", THIS_FILE);
@@ -104,6 +105,18 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 	HTTPLogTrace();
 	
 	return fileLength;
+}
+
+- (NSString *)contentDisposition
+{
+    if (forDownload)
+    {
+        return [NSString stringWithFormat:@"attachment; filename=%@", [filePath lastPathComponent]];
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 - (UInt64)offset

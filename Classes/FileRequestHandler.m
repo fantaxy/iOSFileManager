@@ -43,8 +43,9 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
     }
 	NSString* path = [[fullpath componentsSeparatedByString:@"/"] objectAtIndex:1];
 	NSComparisonResult listFiles = [path caseInsensitiveCompare:@"listfile"];
+	NSComparisonResult downloadFile = [path caseInsensitiveCompare:@"downloadfile"];
 	NSComparisonResult files = [path caseInsensitiveCompare:@"home"];
-	return listFiles == NSOrderedSame || files == NSOrderedSame;
+	return listFiles == NSOrderedSame || downloadFile == NSOrderedSame || files == NSOrderedSame;
 }
 
 - (id)initWithConnection:(HTTPConnection*)conn request:(HTTPMessage *)request
@@ -70,6 +71,10 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
         if (NSOrderedSame == [relativePath caseInsensitiveCompare:@"listfile"])
         {
 			return [self handleListFile];
+        }
+        else if (NSOrderedSame == [relativePath caseInsensitiveCompare:@"downloadfile"])
+        {
+            return [self handleDownloadFile];
         }
 		else if (NSOrderedSame == [relativePath caseInsensitiveCompare:@"home"])
         {
@@ -160,11 +165,10 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
     }
     else if (targetEntity && [targetEntity isKindOfClass:[File class]])
     {
-        return [[HTTPFileResponse alloc] initWithFilePath:targetEntity.url.path forConnection:self.connection];
+        return [[HTTPFileResponse alloc] initWithFilePath:targetEntity.url.path forDownload:NO forConnection:self.connection];
     }
     return nil;
 }
-
 
 - (NSObject<HTTPResponse> *)handleUploadFile
 {
@@ -179,6 +183,18 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 	NSString *tmpfile = [self.parameters objectForKey:@"tmpfilename"];
     [[FileManager sharedInstance] newFileWithName:filename path:targetPath tmpPath:tmpfile];
     return [[HTTPErrorResponse alloc] initWithErrorCode:200];
+}
+
+- (NSObject<HTTPResponse> *)handleDownloadFile
+{
+    NSString *targetPath = self.request.url.path;
+    NSRange removeRange = [targetPath rangeOfString:@"downloadfile"];
+    if (removeRange.location != NSNotFound)
+    {
+        targetPath = [targetPath substringFromIndex:removeRange.location+removeRange.length];
+    }
+    Entity *targetEntity = [[FileManager sharedInstance] getEntityFromPath:targetPath];
+    return [[HTTPFileResponse alloc] initWithFilePath:targetEntity.url.path forDownload:YES forConnection:self.connection];
 }
 
 - (NSObject<HTTPResponse> *)handleDeleteFile

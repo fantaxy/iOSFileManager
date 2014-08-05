@@ -27,6 +27,7 @@
                 </div>
                 <button type="button" class='btn' onclick="chooseFile();">upload file</button>
                 <button type="button" class='btn' onclick="onClickDelete();">delete</button>
+                <button type="button" class='btn' onclick="onClickDownload();">download</button>
             </div>
             
             <div id="file_grid">
@@ -110,6 +111,11 @@
                 if (fileToDelete != "") {
                     deleteSelected(fileToDelete);
                 }
+            }
+
+            function onClickDownload() {
+                var selected = $("input:checked:first").val();
+                window.location = "/downloadfile" + path + "/" + selected;
             }
         
             $('body').click( function (e) {

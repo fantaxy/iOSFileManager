@@ -1204,6 +1204,14 @@ static NSMutableArray *recentNonces;
 			NSString *contentLengthStr = [NSString stringWithFormat:@"%qu", contentLength];
 			[response setHeaderField:@"Content-Length" value:contentLengthStr];
 		}
+		
+		if ([httpResponse respondsToSelector:@selector(contentDisposition)])
+		{
+            if ([httpResponse contentDisposition])
+            {
+                [response setHeaderField:@"Content-disposition" value:[httpResponse contentDisposition]];
+            }
+		}
 	}
 	else
 	{
@@ -1692,7 +1700,7 @@ static NSMutableArray *recentNonces;
 	
 	if (filePath && [[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDir] && !isDir)
 	{
-		return [[HTTPFileResponse alloc] initWithFilePath:filePath forConnection:self];
+		return [[HTTPFileResponse alloc] initWithFilePath:filePath forDownload:NO forConnection:self];
 	
 		// Use me instead for asynchronous file IO.
 		// Generally better for larger files.
@@ -1707,6 +1715,7 @@ static NSMutableArray *recentNonces;
 - (NSObject<HTTPResponse> *)customResponseForMethod:(NSString *)method URI:(NSString *)path
 {
     [self doesNotRecognizeSelector:@selector(customResponseForMethod:URI:)];
+    return nil;
 }
 
 - (WebSocket *)webSocketForURI:(NSString *)path
