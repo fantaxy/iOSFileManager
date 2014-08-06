@@ -115,7 +115,9 @@
 
             function onClickDownload() {
                 var selected = $("input:checked:first").val();
-                window.location = "/downloadfile" + path + "/" + selected;
+                if (selected != "") {
+                    window.location = "/downloadfile" + path + "/" + selected;
+                }
             }
         
             $('body').click( function (e) {

@@ -84,9 +84,10 @@
     return self.fileDict.count;
 }
 
-- (NSString *)fileNameAtIndex:(NSInteger)index
+- (NSArray *)sortedFileArray
 {
-    return self.fileDict.allKeys[index];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:YES];
+    return [self.fileDict.allValues sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
 }
 
 - (void)addFileWithName:(NSString *)name inTempPath:(NSString *)tmpPath

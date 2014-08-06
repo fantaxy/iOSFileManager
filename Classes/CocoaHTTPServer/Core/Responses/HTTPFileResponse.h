@@ -9,6 +9,7 @@
 	HTTPConnection *connection;
 	
 	NSString *filePath;
+    NSString *fileName;
 	UInt64 fileLength;
 	UInt64 fileOffset;
 	
@@ -20,7 +21,7 @@
 	NSUInteger bufferSize;
 }
 
-- (id)initWithFilePath:(NSString *)fpath forDownload:(BOOL)download forConnection:(HTTPConnection *)parent;
+- (id)initWithFilePath:(NSString *)fpath fileName:(NSString *)fname forDownload:(BOOL)download forConnection:(HTTPConnection *)parent;
 - (NSString *)filePath;
 
 @end

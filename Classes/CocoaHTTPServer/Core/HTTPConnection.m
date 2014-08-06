@@ -1700,7 +1700,7 @@ static NSMutableArray *recentNonces;
 	
 	if (filePath && [[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDir] && !isDir)
 	{
-		return [[HTTPFileResponse alloc] initWithFilePath:filePath forDownload:NO forConnection:self];
+		return [[HTTPFileResponse alloc] initWithFilePath:filePath fileName:nil forDownload:NO forConnection:self];
 	
 		// Use me instead for asynchronous file IO.
 		// Generally better for larger files.

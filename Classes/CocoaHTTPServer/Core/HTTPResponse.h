@@ -9,8 +9,6 @@
 **/
 - (UInt64)contentLength;
 
-- (NSString *)contentDisposition;
-
 /**
  * The HTTP server supports range requests in order to allow things like
  * file download resumption and optimized streaming on mobile devices.
@@ -84,6 +82,8 @@
  * invoke any methods on the HTTPConnection after this method is called (as the connection may be deallocated).
 **/
 - (void)connectionDidClose;
+
+- (NSString *)contentDisposition;
 
 @end
 

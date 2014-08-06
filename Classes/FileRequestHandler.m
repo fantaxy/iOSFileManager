@@ -105,11 +105,12 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
     
 	NSMutableString *output = [[NSMutableString alloc] init];
 	[output appendString:@"["];
-	for(int i = 0; i<[targetDir numberOfFiles]; ++i)
-	{
-		NSString* filename = [targetDir fileNameAtIndex:i];
+    //Note: Files are sorted by creation date.
+	for (Entity *entity in [targetDir sortedFileArray])
+    {
+		NSString* filename = entity.name;
 		NSString* file = [filename stringByReplacingOccurrencesOfString:@"'" withString:@"\\'"] ;
-		[output appendFormat:@"{\"name\":\"%@\", \"id\":%d},", file, i];
+		[output appendFormat:@"{\"name\":\"%@\"},", file];
 	}
 	if ([output length] > 1)
 	{
@@ -165,7 +166,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
     }
     else if (targetEntity && [targetEntity isKindOfClass:[File class]])
     {
-        return [[HTTPFileResponse alloc] initWithFilePath:targetEntity.url.path forDownload:NO forConnection:self.connection];
+        return [[HTTPFileResponse alloc] initWithFilePath:targetEntity.url.path fileName:targetEntity.name forDownload:NO forConnection:self.connection];
     }
     return nil;
 }
@@ -194,7 +195,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
         targetPath = [targetPath substringFromIndex:removeRange.location+removeRange.length];
     }
     Entity *targetEntity = [[FileManager sharedInstance] getEntityFromPath:targetPath];
-    return [[HTTPFileResponse alloc] initWithFilePath:targetEntity.url.path forDownload:YES forConnection:self.connection];
+    return [[HTTPFileResponse alloc] initWithFilePath:targetEntity.url.path fileName:targetEntity.name forDownload:YES forConnection:self.connection];
 }
 
 - (NSObject<HTTPResponse> *)handleDeleteFile

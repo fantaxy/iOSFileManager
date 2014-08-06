@@ -17,11 +17,8 @@
 // number of the files
 - (NSInteger)numberOfFiles;
 
-// the file name by the index
-- (NSString*)fileNameAtIndex:(NSInteger)index;
-
-// provide full file path by given file name
-- (NSString*)filePathForFileName:(NSString*)filename;
+// the sorted array of all files in this directory
+- (NSArray *)sortedFileArray;
 
 // handle newly uploaded file. After uploading, the file is stored in
 // the temparory directory
