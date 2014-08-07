@@ -18,6 +18,7 @@
 #import "HTTPLogging.h"
 
 static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
+#define SEPARATOR @"+"
 
 @interface FileRequestHandler ()
 
@@ -72,10 +73,6 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
         {
 			return [self handleListFile];
         }
-        else if (NSOrderedSame == [relativePath caseInsensitiveCompare:@"downloadfile"])
-        {
-            return [self handleDownloadFile];
-        }
 		else if (NSOrderedSame == [relativePath caseInsensitiveCompare:@"home"])
         {
 			return [self handleShowFile];
@@ -87,6 +84,10 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
         if (NSOrderedSame == [relativePath caseInsensitiveCompare:@"deletefile"])
         {
 			return [self handleDeleteFile];
+        }
+        else if (NSOrderedSame == [relativePath caseInsensitiveCompare:@"downloadfile"])
+        {
+            return [self handleDownloadFile];
         }
         return [self handleUploadFile];
 	}
@@ -188,14 +189,44 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 
 - (NSObject<HTTPResponse> *)handleDownloadFile
 {
-    NSString *targetPath = self.request.url.path;
-    NSRange removeRange = [targetPath rangeOfString:@"downloadfile"];
-    if (removeRange.location != NSNotFound)
+	NSString *path = [self.parameters objectForKey:@"path"];
+	NSString *files = [self.parameters objectForKey:@"files"];
+    Directory *parentDir = [[FileManager sharedInstance] getDirectoryFromPath:path];
+    //Note: files should be @"file1,file2,file3,"
+    if (files && files.length)
     {
-        targetPath = [targetPath substringFromIndex:removeRange.location+removeRange.length];
+        if ([files hasSuffix:SEPARATOR])
+        {
+            files = [files substringToIndex:files.length-1];
+        }
+        NSArray *fileNameArray = [files componentsSeparatedByString:SEPARATOR];
+        if (fileNameArray.count == 1)
+        {
+            Entity *entity = [parentDir getEntityFromPath:[fileNameArray firstObject]];
+            if ([entity isKindOfClass:[Directory class]])
+            {
+                //Zip the dir to entityName.zip
+            }
+            else
+            {
+                return [[HTTPFileResponse alloc] initWithFilePath:entity.url.path fileName:entity.name forDownload:YES forConnection:self.connection];
+            }
+        }
+        else if (fileNameArray.count > 1)
+        {
+            NSMutableArray *fileArray = [NSMutableArray new];
+            for (NSString *fileName in fileNameArray)
+            {
+                Entity *entity = [parentDir getEntityFromPath:fileName];
+                if (entity)
+                {
+                    [fileArray addObject:entity];
+                }
+            }
+            //Zip all files to parentDirName.zip
+        }
     }
-    Entity *targetEntity = [[FileManager sharedInstance] getEntityFromPath:targetPath];
-    return [[HTTPFileResponse alloc] initWithFilePath:targetEntity.url.path fileName:targetEntity.name forDownload:YES forConnection:self.connection];
+    return nil;
 }
 
 - (NSObject<HTTPResponse> *)handleDeleteFile
@@ -205,11 +236,11 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
     //Note: files should be @"file1,file2,file3,"
     if (files && files.length)
     {
-        if ([files hasSuffix:@","])
+        if ([files hasSuffix:SEPARATOR])
         {
             files = [files substringToIndex:files.length-1];
         }
-        NSArray *fileArray = [files componentsSeparatedByString:@","];
+        NSArray *fileArray = [files componentsSeparatedByString:SEPARATOR];
         Directory *dir = [[FileManager sharedInstance] getDirectoryFromPath:path];
         NSParameterAssert(dir);
         [dir deleteFilesWithArray:fileArray];

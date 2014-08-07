@@ -97,7 +97,7 @@
             loadFiles();
             
             function deleteSelected(selected) {
-                $.post("/deletefile" + path, "path="+path+"&delete="+selected)
+                $.post("/deletefile", "path="+path+"&delete="+selected)
                     .done(function (){
                         loadFiles();
                     });
@@ -106,7 +106,7 @@
             function onClickDelete() {
                 var fileToDelete = "";
                 $("input:checked").each(function() {
-                    fileToDelete += $(this).val() + ",";
+                    fileToDelete += $(this).val() + "+";
                 });
                 if (fileToDelete != "") {
                     deleteSelected(fileToDelete);
@@ -114,9 +114,15 @@
             }
 
             function onClickDownload() {
-                var selected = $("input:checked:first").val();
-                if (selected != "") {
-                    window.location = "/downloadfile" + path + "/" + selected;
+                var fileToDownload = "";
+                $("input:checked").each(function() {
+                    fileToDownload += $(this).val() + " ";
+                });
+                if (fileToDownload != "") {
+                    sendRequest("/downloadfile", "post", {
+                        path: path,
+                        files: fileToDownload
+                    });
                 }
             }
         
@@ -132,7 +138,27 @@
                         loadFiles();
                     }
                 });
-            });            
+            });
+            
+            function sendRequest(action, method, input) {
+                "use strict";
+                var form;
+                form = $('<form />', {
+                    action: action,
+                    method: method,
+                    style: 'display: none;'
+                });
+                if (typeof input !== 'undefined') {
+                    $.each(input, function (name, value) {
+                        $('<input />', {
+                            type: 'hidden',
+                            name: name,
+                            value: value
+                        }).appendTo(form);
+                    });
+                }
+                form.appendTo('body').submit();
+            }
 
             jQuery.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {
                 return this.each(function(){
