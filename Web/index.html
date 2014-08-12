@@ -21,13 +21,18 @@
                 %%NAVIGATION%%
             </div>
             
-            <div id="global-actions-bar">
+            <div id="actions-bar">
                 <div style="height:0px;overflow:hidden">
                     <input id="fileupload" type="file" name="files[]" data-url="" multiple>
                 </div>
-                <button type="button" class='btn' onclick="chooseFile();">upload file</button>
-                <button type="button" class='btn' onclick="onClickDelete();">delete</button>
-                <button type="button" class='btn' onclick="onClickDownload();">download</button>
+                <div class='action' id='global-btn'>
+                    <button type="button" class='btn' onclick="chooseFile();">upload file</button>
+                    <button type="button" class='btn' onclick="onClickNewFolder();">new folder</button>
+                </div>
+                <div class='action' id='action-btn' style="display:none;">
+                    <button type="button" class='btn action-btn' onclick="onClickDelete();">delete</button>
+                    <button type="button" class='btn action-btn' onclick="onClickDownload();">download</button>
+                </div>
             </div>
             
             <div id="file_grid">
@@ -39,6 +44,15 @@
             var path = '%%FILE_PATH%%';
             function chooseFile() {
                 $("#fileupload").click();
+            }
+        
+            function updateActionBtn () {
+                if ($("input:checked").length) {
+                    $("#action-btn").show();
+                }
+                else {
+                    $("#action-btn").hide();
+                }
             }
 
             function deselectAll() {
@@ -52,12 +66,12 @@
                 var checkbox = $(this).find(":checkbox");
                 if (e.ctrlKey || e.metaKey) {
                     if (!checkbox.prop("checked")) {
-                    checkbox.prop("checked",true);
-                    $(this).attr("class","file_block_selected");
+                        checkbox.prop("checked",true);
+                        $(this).attr("class","file_block_selected");
                     }
                     else {
-                      checkbox.prop("checked",false);
-                      $(this).attr("class","file_block");
+                        checkbox.prop("checked",false);
+                        $(this).attr("class","file_block");
                     }
                 }
                 else {
@@ -65,6 +79,7 @@
                     checkbox.prop("checked",true);
                     $(this).attr("class","file_block_selected");
                 }
+                updateActionBtn();
             }
 
             function doubleClick(e) {
@@ -96,17 +111,51 @@
             }
             loadFiles();
             
+            function onFinishNewFolder() {
+                var folderName = $("#new_file_name").val();
+                if (folderName != "") {
+                    $.post("/newfolder", "path="+path+"&folder="+folderName)
+                        .done(function (){
+                            loadFiles();
+                        });                    
+                }
+                else {
+                    loadFiles();                    
+                }
+            }
+
+            function onClickNewFolder() {
+                var newfileblock = $('<div/>').attr("class","file_block");
+                $('<img/>').attr("src","/images/fileicon.png").appendTo(newfileblock);
+                var newfilename = $('<input/>').attr("type","text").attr("id","new_file_name")
+                newfilename.appendTo(newfileblock);
+                newfilename.focusout(onFinishNewFolder);
+                newfilename.keyup(function(e) {
+                    if (e.keyCode == 13) {
+                        onFinishNewFolder();
+                    }
+                });
+                if ($("#file_grid").is(':empty')) {
+                    newfileblock.appendTo($("#file_grid"));
+                }
+                else {
+                    newfileblock.insertBefore($(".file_block:first-child"));
+                }
+                newfilename.focus();
+            }
+            
             function deleteSelected(selected) {
                 $.post("/deletefile", "path="+path+"&delete="+selected)
                     .done(function (){
                         loadFiles();
+                        updateActionBtn();
                     });
             }
 
             function onClickDelete() {
                 var fileToDelete = "";
                 $("input:checked").each(function() {
-                    fileToDelete += $(this).val() + "+";
+                    fileToDelete += $(this).val() + ":";
                 });
                 if (fileToDelete != "") {
                     deleteSelected(fileToDelete);
@@ -116,10 +165,10 @@
             function onClickDownload() {
                 var fileToDownload = "";
                 $("input:checked").each(function() {
-                    fileToDownload += $(this).val() + " ";
+                    fileToDownload += $(this).val() + ":";
                 });
                 if (fileToDownload != "") {
-                    sendRequest("/downloadfile", "post", {
+                    sendFormRequest("/downloadfile", "post", {
                         path: path,
                         files: fileToDownload
                     });
@@ -127,9 +176,11 @@
             }
         
             $('body').click( function (e) {
-                if ( e.target == this )
+                if ( e.target == this || e.target === $("#file_grid")[0]) {
                     deselectAll();
-                });
+                    updateActionBtn();
+                }
+            });
                 
                 
             $(function () {
@@ -140,7 +191,7 @@
                 });
             });
             
-            function sendRequest(action, method, input) {
+            function sendFormRequest(action, method, input) {
                 "use strict";
                 var form;
                 form = $('<form />', {

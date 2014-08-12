@@ -30,7 +30,8 @@ h1 {
 }
 
 #container {
-    width: 1000px !important;
+    width: 920px !important;
+    height: inherit;
     background-color: #fff;
     padding-right: 15px;
     padding-left: 15px;
@@ -63,17 +64,18 @@ h1 {
     color: #2895f1;
 }
 
-#global-actions-bar {
-    float: left;
+#actions-bar {
+    display: inline-block;
     width: 100%;
     margin-left: 20px;
+    margin-right: 20px;
     margin-bottom: 20px;
 }
 
 .btn {
     float: left;
     margin-right: 10px;
-    width: 100px;
+    width: 110px;
     height: 30px;
     border: none;
     border-radius: 6px;
@@ -92,8 +94,9 @@ h1 {
 }
 
 #file_grid {
-    padding-top: 20px;
+    width: inherit;
     display: block;
+    overflow: hidden;
 }
 
 .file_block {
@@ -125,5 +128,11 @@ h1 {
     text-align: center;
     text-overflow: ellipsis;
     overflow: hidden;
+    white-space: nowrap;
+}
+
+#new_file_name {
+    width: 160px;
+    margin: 8px 10px 0px 10px;
     white-space: nowrap;
 }

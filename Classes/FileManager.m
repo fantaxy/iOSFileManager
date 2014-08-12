@@ -10,6 +10,8 @@
 #import "File.h"
 #import "Directory.h"
 
+#define SEPARATOR @":"
+
 @interface FileManager ()
 
 @property (nonatomic, strong) NSFileManager *fileManager;
@@ -108,13 +110,81 @@ static FileManager *sharedInstance;
     return nil;
 }
 
+- (NSArray *)getFileArrayFromPath:(NSString *)path
+{
+    Directory *targetDir = [[FileManager sharedInstance] getDirectoryFromPath:path];
+    return [targetDir sortedFileArray];
+}
+
 - (void)newFileWithName:(NSString *)fileName path:(NSString *)path tmpPath:(NSString *)tmpPath
 {
     Directory *dir = [self getDirectoryFromPath:path];
+    NSParameterAssert(dir);
     [dir addFileWithName:fileName inTempPath:tmpPath];
 }
 
+- (void)newFolderWithName:(NSString *)folderName atPath:(NSString *)path
+{
+    Directory *dir = [self getDirectoryFromPath:path];
+    NSParameterAssert(dir);
+    [dir addFolderWithName:folderName];
+}
 
+- (NSString *)getDownloadFilePathForFiles:(NSString *)fileNames atPath:(NSString *)path
+{
+    Directory *parentDir = [self getDirectoryFromPath:path];
+    //Note: files should be @"file1,file2,file3,"
+    if (fileNames && fileNames.length)
+    {
+        if ([fileNames hasSuffix:SEPARATOR])
+        {
+            fileNames = [fileNames substringToIndex:fileNames.length-1];
+        }
+        NSArray *fileNameArray = [fileNames componentsSeparatedByString:SEPARATOR];
+        if (fileNameArray.count == 1)
+        {
+            Entity *entity = [parentDir getEntityFromPath:[fileNameArray firstObject]];
+            if ([entity isKindOfClass:[Directory class]])
+            {
+                //Zip the dir to entityName.zip
+            }
+            else
+            {
+                return entity.url.path;
+            }
+        }
+        else if (fileNameArray.count > 1)
+        {
+            NSMutableArray *fileArray = [NSMutableArray new];
+            for (NSString *fileName in fileNameArray)
+            {
+                Entity *entity = [parentDir getEntityFromPath:fileName];
+                if (entity)
+                {
+                    [fileArray addObject:entity];
+                }
+            }
+            //Zip all files to parentDirName.zip
+        }
+    }
+    return nil;
+}
+
+- (void)deleteFilesWithName:(NSString *)fileNames atPath:(NSString *)path
+{
+    //Note: files should be @"file1,file2,file3,"
+    if (fileNames && fileNames.length)
+    {
+        if ([fileNames hasSuffix:SEPARATOR])
+        {
+            fileNames = [fileNames substringToIndex:fileNames.length-1];
+        }
+        NSArray *fileArray = [fileNames componentsSeparatedByString:SEPARATOR];
+        Directory *dir = [self getDirectoryFromPath:path];
+        NSParameterAssert(dir);
+        [dir deleteFilesWithArray:fileArray];
+    }
+}
 
 
 //- (Directory *)getDirectoryFromURL:(NSURL *)dirUrl

@@ -15,6 +15,10 @@
 
 - (Entity *)getEntityFromPath:(NSString *)path;
 - (Directory *)getDirectoryFromPath:(NSString *)path;
+- (NSArray *)getFileArrayFromPath:(NSString *)path;
+- (NSString *)getDownloadFilePathForFiles:(NSString *)fileNames atPath:(NSString *)path;
 - (void)newFileWithName:(NSString *)fileName path:(NSString *)path tmpPath:(NSString *)tmpPath;
+- (void)newFolderWithName:(NSString *)folderName atPath:(NSString *)path;
+- (void)deleteFilesWithName:(NSString *)fileNames atPath:(NSString *)path;
 
 @end

@@ -37,6 +37,7 @@
 		7630E83B19738B1600FE9445 /* HTTPErrorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 7630E83319738B1600FE9445 /* HTTPErrorResponse.m */; };
 		7630E83C19738B1600FE9445 /* HTTPFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 7630E83519738B1600FE9445 /* HTTPFileResponse.m */; };
 		7630E83D19738B1600FE9445 /* HTTPRedirectResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 7630E83719738B1600FE9445 /* HTTPRedirectResponse.m */; };
+		764BA182199915B8008BA43D /* NSString+URLcodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 764BA181199915B8008BA43D /* NSString+URLcodec.m */; };
 		7652F21119710441001522BC /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = 7652F21019710441001522BC /* File.m */; };
 		7652F21619712024001522BC /* Directory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7652F21519712024001522BC /* Directory.m */; };
 		7652F219197121EC001522BC /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7652F218197121EC001522BC /* FileManager.m */; };
@@ -108,6 +109,8 @@
 		7630E83519738B1600FE9445 /* HTTPFileResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTTPFileResponse.m; path = Classes/CocoaHTTPServer/Core/Responses/HTTPFileResponse.m; sourceTree = "<group>"; };
 		7630E83619738B1600FE9445 /* HTTPRedirectResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTTPRedirectResponse.h; path = Classes/CocoaHTTPServer/Core/Responses/HTTPRedirectResponse.h; sourceTree = "<group>"; };
 		7630E83719738B1600FE9445 /* HTTPRedirectResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTTPRedirectResponse.m; path = Classes/CocoaHTTPServer/Core/Responses/HTTPRedirectResponse.m; sourceTree = "<group>"; };
+		764BA180199915B8008BA43D /* NSString+URLcodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLcodec.h"; sourceTree = "<group>"; };
+		764BA181199915B8008BA43D /* NSString+URLcodec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLcodec.m"; sourceTree = "<group>"; };
 		7652F20F19710441001522BC /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
 		7652F21019710441001522BC /* File.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = File.m; sourceTree = "<group>"; };
 		7652F21419712024001522BC /* Directory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Directory.h; sourceTree = "<group>"; };
@@ -149,6 +152,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				764BA183199915C3008BA43D /* Util */,
 				7652F20E197103FD001522BC /* FileManager */,
 				1D3623240D0F684500981E51 /* iPhoneHTTPServerAppDelegate.h */,
 				1D3623250D0F684500981E51 /* iPhoneHTTPServerAppDelegate.m */,
@@ -309,6 +313,15 @@
 			name = Responses;
 			sourceTree = "<group>";
 		};
+		764BA183199915C3008BA43D /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				764BA180199915B8008BA43D /* NSString+URLcodec.h */,
+				764BA181199915B8008BA43D /* NSString+URLcodec.m */,
+			);
+			name = Util;
+			sourceTree = "<group>";
+		};
 		7652F20E197103FD001522BC /* FileManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -409,6 +422,7 @@
 			files = (
 				7630E82A19738AF900FE9445 /* DDRange.m in Sources */,
 				7630E83B19738B1600FE9445 /* HTTPErrorResponse.m in Sources */,
+				764BA182199915B8008BA43D /* NSString+URLcodec.m in Sources */,
 				7652F2231972BC00001522BC /* Entity.m in Sources */,
 				7630E7FC1973897700FE9445 /* DDFileLogger.m in Sources */,
 				7630E82819738AF900FE9445 /* DDData.m in Sources */,

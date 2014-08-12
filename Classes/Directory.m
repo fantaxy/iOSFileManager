@@ -105,6 +105,21 @@
     [self buildHierachy];
 }
 
+- (void)addFolderWithName:(NSString *)name
+{
+    if (name == nil)
+		return;
+	NSString *path = [NSString stringWithFormat:@"%@/%@", self.url.path, name];
+	NSFileManager *fm = [NSFileManager defaultManager];
+	NSError *error;
+	if (![fm createDirectoryAtPath:path withIntermediateDirectories:NO attributes:nil error:&error])
+	{
+		NSLog(@"Can not create folder %@ at %@ because: %@", name, path, error );
+        return;
+	}
+    [self buildHierachy];
+}
+
 - (void)deleteFilesWithArray:(NSArray *)files
 {
     for (NSString *path in files)

@@ -1,6 +1,7 @@
 #import "HTTPFileResponse.h"
 #import "HTTPConnection.h"
 #import "HTTPLogging.h"
+#import "NSString+URLcodec.h"
 
 #import <unistd.h>
 #import <fcntl.h>
@@ -112,7 +113,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 {
     if (forDownload)
     {
-        return [NSString stringWithFormat:@"attachment; filename=%@", fileName];
+        return [NSString stringWithFormat:@"attachment; filename*=UTF-8''%@", [fileName URLEncode]];
     }
     else
     {
