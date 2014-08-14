@@ -1,26 +1,19 @@
-INFO:
 
-This is a bare bones project demonstrating how to embed the CocoaHTTPServer in an iOS project.
+<> Introduction:
 
-Notice the Web folder. This folder is added to the project as a resource, and the folder itself is copied into the iPhone app. The contents of the folder are set as the document root of the http server.
+iOSFileManager is a lightweight http server that runs on iOS devices and provided service for file management and transmission.
 
-Critical note: The server is running only while application is in foreground. As soon as you exit from the application (by switching to another app or locking a device) the server will be stopped. The server will be restarted when you enter the application again.
-Read this Apple technical note for the details: http://developer.apple.com/library/ios/#technotes/tn2277/_index.html
+This project is based on CocoaHTTPServer (https://github.com/robbiehanson/CocoaHTTPServer) by Deusty Designs.
 
-INSTRUCTIONS:
+<> Supported Features:
 
-Open the Xcode project, and build and go.
+1. Files and directories listing with icons and directory hierachy is honored.
+2. Single click to select, double click to open, all like the trditional experience with file management.
+3. Support file uploading, downloading, deleting and creating new folder through the brownser.
+4. Support drag and drop uploading.
+5. Support multiple files uploading, deleting.
 
-On the Xcode console you'll see a message saying:
-"Started HTTP server on port 59123"
+<> Usage:
 
-Now open your browser and type in the URL to access the server.
-If you're running it via the simulator, then you can use:
-http://localhost:59123
-
-If you're running it on your device, then you'll need to use:
-http://&lt;local IP of device&gt;:59123
-
-(Replace 59123 with whatever port the server is actually running on.)
-
-Enjoy.
+Open the Xcode project, build and run.
+Then visit http://IP of your device:12345
